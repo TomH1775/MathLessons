@@ -1,12 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Practice App</title>
     <title>Angle Math Practice App</title>
     <link rel="icon" type="image/x-icon" href="https://static.vecteezy.com/system/resources/previews/026/587/069/non_2x/four-math-operations-clipart-set-simple-addition-subtraction-multiplication-division-flat-illustration-clipart-cartoon-style-clipart-students-math-classroom-back-to-school-concept-vector.jpg">
     <style>
         :root {
-@@ -216,22 +216,60 @@
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #03a9f4;
+            --light: #e1e2e3;
+            --dark: #333;
+            --success: #4CAF50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .welcome-screen, .test-screen, .results-screen, .assignments-screen, .improvement-screen {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .question {
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            animation: slideIn 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .assignment-item {
+            background: var(--light);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .assignment-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .assignment-item.completed {
+            background: #e8f5e9;
+            border-left: 5px solid var(--success);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+
+        .result-item.correct {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+
+        .result-item.incorrect {
+            background-color: rgba(244, 67, 54, 0.2);
+        }
+
+        .shake {
+            animation: shake 0.5s forwards;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s forwards;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .rotate-in {
+            animation: rotateIn 0.5s forwards;
+        }
+
+        @keyframes rotateIn {
+            from { transform: rotate(-10deg); opacity: 0; }
+            to { transform: rotate(0); opacity: 1; }
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .feedback.positive {
+            background-color: var(--success);
+        }
+
         .feedback.negative {
             background-color: var(--error);
         }
@@ -54,8 +260,6 @@
     <div class="container">
         <!-- Welcome Screen -->
         <div class="welcome-screen" id="welcomeScreen">
-            <h1>Math Practice App</h1>
-            <p>Welcome! Enter your name to start improving your math skills.</p>
             <h1>Angle Math Practice App</h1>
             <p>Welcome! Enter your name to start improving your angle mathematics skills.</p>
             <input type="text" id="userName" placeholder="Enter your name">
@@ -64,38 +268,107 @@
 
         <!-- Test Screen -->
         <div class="test-screen hidden" id="testScreen">
-            <h2>Math Test</h2>
-            <p>Complete the following questions to assess your skills.</p>
             <h2>Angle Mathematics Test</h2>
             <p>Complete the following questions about angles to assess your skills.</p>
             <div id="questionsContainer"></div>
             <button id="submitTest">Submit Test</button>
         </div>
-@@ -303,7 +341,7 @@ <h2>Your Improvement</h2>
+
+        <!-- Results Screen -->
+        <div class="results-screen hidden" id="resultsScreen">
+            <h2>Test Results</h2>
+            <div id="resultsContainer"></div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="resultProgressBar"></div>
+            </div>
+            <p>Based on your results, we've created personalized assignments for you.</p>
+            <button id="viewAssignments">View Assignments</button>
+        </div>
+
+        <!-- Assignments Screen -->
+        <div class="assignments-screen hidden" id="assignmentsScreen">
+            <h2>Your Assignments</h2>
+            <p id="welcomeMessage"></p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="assignmentProgressBar"></div>
+            </div>
+            <div id="assignmentsContainer"></div>
+            <button id="retakeTest" class="hidden">Retake Test</button>
+        </div>
+
+        <!-- Improvement Screen -->
+        <div class="improvement-screen hidden" id="improvementScreen">
+            <h2>Your Improvement</h2>
+            <div id="improvementContainer"></div>
+            <div id="feedbackMessage" class="feedback"></div>
+            <button id="startOver">Start Over</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const testScreen = document.getElementById('testScreen');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const assignmentsScreen = document.getElementById('assignmentsScreen');
+        const improvementScreen = document.getElementById('improvementScreen');
+        const userName = document.getElementById('userName');
+        const startButton = document.getElementById('startButton');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const submitTestButton = document.getElementById('submitTest');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const viewAssignmentsButton = document.getElementById('viewAssignments');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const assignmentsContainer = document.getElementById('assignmentsContainer');
+        const retakeTestButton = document.getElementById('retakeTest');
+        const resultProgressBar = document.getElementById('resultProgressBar');
+        const assignmentProgressBar = document.getElementById('assignmentProgressBar');
+        const improvementContainer = document.getElementById('improvementContainer');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const startOverButton = document.getElementById('startOver');
+
+        // App State
+        let state = {
+            name: '',
+            currentTest: [],
+            testResults: [],
+            assignments: [],
+            completedAssignments: [],
+            initialScore: 0,
+            finalScore: 0,
+            testAttempts: 0
+        };
 
         // Check for existing data in localStorage
         function loadSavedData() {
-            const savedData = localStorage.getItem('mathAppData');
             const savedData = localStorage.getItem('angleMathAppData');
             if (savedData) {
                 state = JSON.parse(savedData);
                 if (state.name && state.assignments.length > 0) {
-@@ -317,7 +355,7 @@ <h2>Your Improvement</h2>
+                    userName.value = state.name;
+                    showScreen(assignmentsScreen);
+                    renderAssignments();
+                    updateAssignmentProgress();
+                }
+            }
+        }
 
         // Save data to localStorage
         function saveData() {
-            localStorage.setItem('mathAppData', JSON.stringify(state));
             localStorage.setItem('angleMathAppData', JSON.stringify(state));
         }
 
         // Show a specific screen and hide others
-@@ -331,42 +369,97 @@ <h2>Your Improvement</h2>
+        function showScreen(screen) {
+            welcomeScreen.classList.add('hidden');
+            testScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            assignmentsScreen.classList.add('hidden');
+            improvementScreen.classList.add('hidden');
+            
             screen.classList.remove('hidden');
         }
 
-        // Generate random math problems
-        function generateMathProblems(count = 10) {
-            const operations = ['+', '-', '*', '/'];
         // Generate random angle problems
         function generateAngleProblems(count = 10) {
             const problemTypes = [
@@ -112,18 +385,11 @@
             ];
             
             const problems = [];
-
+            
             for (let i = 0; i < count; i++) {
-                const operation = operations[Math.floor(Math.random() * operations.length)];
-                let num1, num2, answer;
                 const problemType = problemTypes[Math.floor(Math.random() * problemTypes.length)];
                 let question, answer, options;
-
-                switch (operation) {
-                    case '+':
-                        num1 = Math.floor(Math.random() * 50) + 1;
-                        num2 = Math.floor(Math.random() * 50) + 1;
-                        answer = num1 + num2;
+                
                 switch (problemType) {
                     case 'complementary':
                         const angle1 = Math.floor(Math.random() * 89) + 1;
@@ -155,20 +421,12 @@
                         answer = 180 - (interiorAngle1 + interiorAngle2);
                         question = `In a triangle, if two interior angles measure ${interiorAngle1}° and ${interiorAngle2}°, what is the third angle?`;
                         break;
-                    case '-':
-                        num1 = Math.floor(Math.random() * 50) + 25;
-                        num2 = Math.floor(Math.random() * num1) + 1;
-                        answer = num1 - num2;
                         
                     case 'conversion':
                         const degrees = Math.floor(Math.random() * 360);
                         answer = Math.round((degrees * Math.PI / 180) * 100) / 100;
                         question = `Convert ${degrees}° to radians (round to 2 decimal places).`;
                         break;
-                    case '*':
-                        num1 = Math.floor(Math.random() * 12) + 1;
-                        num2 = Math.floor(Math.random() * 12) + 1;
-                        answer = num1 * num2;
                         
                     case 'triangle':
                         const triangleAngle1 = Math.floor(Math.random() * 60) + 10;
@@ -176,10 +434,6 @@
                         answer = 180 - triangleAngle1 - triangleAngle2;
                         question = `In a triangle, if two angles measure ${triangleAngle1}° and ${triangleAngle2}°, what is the third angle?`;
                         break;
-                    case '/':
-                        num2 = Math.floor(Math.random() * 10) + 1;
-                        answer = Math.floor(Math.random() * 10) + 1;
-                        num1 = num2 * answer;
                         
                     case 'straight':
                         const straightAngle1 = Math.floor(Math.random() * 120) + 30;
@@ -202,35 +456,29 @@
                         question = `If an angle measures ${regularAngle}°, what is its reflex angle?`;
                         break;
                 }
-
+                
                 problems.push({
-                    num1,
-                    num2,
-                    operation,
                     type: problemType,
                     question,
                     answer,
                     id: `q${i}`,
                     userAnswer: null
-@@ -378,29 +471,76 @@ <h2>Your Improvement</h2>
+                });
+            }
+            
+            return problems;
+        }
 
         // Render the test questions
         function renderTest() {
-            state.currentTest = generateMathProblems();
             state.currentTest = generateAngleProblems();
             questionsContainer.innerHTML = '';
-
+            
             state.currentTest.forEach((problem, index) => {
                 const questionElement = document.createElement('div');
                 questionElement.classList.add('question');
                 questionElement.style.animationDelay = `${index * 0.1}s`;
-
-                let operationSymbol;
-                switch (problem.operation) {
-                    case '+': operationSymbol = '+'; break;
-                    case '-': operationSymbol = '-'; break;
-                    case '*': operationSymbol = '×'; break;
-                    case '/': operationSymbol = '÷'; break;
+                
                 // Create angle visualization for certain problem types
                 let angleVisualization = '';
                 if (['complementary', 'supplementary', 'vertical', 'triangle', 'straight', 'right'].includes(problem.type)) {
@@ -243,16 +491,14 @@
                         </div>
                     `;
                 }
-
+                
                 questionElement.innerHTML = `
                     <h3>Question ${index + 1}</h3>
-                    <p>${problem.num1} ${operationSymbol} ${problem.num2} = ?</p>
-                    <input type="number" id="${problem.id}" placeholder="Your answer">
                     <p>${problem.question}</p>
                     ${angleVisualization}
                     <input type="number" id="${problem.id}" placeholder="Your answer" step="any">
                 `;
-
+                
                 questionsContainer.appendChild(questionElement);
                 
                 // Set up angle visualization if it exists
@@ -298,11 +544,13 @@
             });
         }
 
-@@ -411,9 +551,16 @@ <h3>Question ${index + 1}</h3>
-
+        // Grade the test
+        function gradeTest() {
+            state.testResults = [];
+            let correctCount = 0;
+            
             state.currentTest.forEach(problem => {
                 const inputElement = document.getElementById(problem.id);
-                problem.userAnswer = parseInt(inputElement.value);
                 problem.userAnswer = parseFloat(inputElement.value);
                 
                 // For radian answers, allow a small margin of error
@@ -312,59 +560,82 @@
                 } else {
                     isCorrect = problem.userAnswer === problem.answer;
                 }
-
-                const isCorrect = problem.userAnswer === problem.answer;
+                
                 if (isCorrect) correctCount++;
-
+                
                 state.testResults.push({
-@@ -451,17 +598,9 @@ <h3>Score: ${results.score}%</h3>
+                    problem,
+                    isCorrect
+                });
+            });
+            
+            const score = Math.round((correctCount / state.currentTest.length) * 100);
+            
+            if (state.testAttempts === 0) {
+                state.initialScore = score;
+            } else {
+                state.finalScore = score;
+            }
+            
+            state.testAttempts++;
+            
+            return {
+                score,
+                correctCount,
+                totalCount: state.currentTest.length
+            };
+        }
+
+        // Render test results
+        function renderResults(results) {
+            resultsContainer.innerHTML = `
+                <h3>Score: ${results.score}%</h3>
+                <p>You got ${results.correctCount} out of ${results.totalCount} questions correct.</p>
+            `;
+            
+            state.testResults.forEach((result, index) => {
+                const resultItem = document.createElement('div');
                 resultItem.classList.add('result-item');
                 resultItem.classList.add(result.isCorrect ? 'correct' : 'incorrect');
-
-                let operationSymbol;
-                switch (result.problem.operation) {
-                    case '+': operationSymbol = '+'; break;
-                    case '-': operationSymbol = '-'; break;
-                    case '*': operationSymbol = '×'; break;
-                    case '/': operationSymbol = '÷'; break;
-                }
                 
                 resultItem.innerHTML = `
-                    <div>${result.problem.num1} ${operationSymbol} ${result.problem.num2} = ${result.problem.answer}</div>
-                    <div>Your answer: ${result.problem.userAnswer} (${result.isCorrect ? 'Correct' : 'Incorrect'})</div>
                     <div>${result.problem.question}</div>
                     <div>Your answer: ${result.problem.userAnswer} (${result.isCorrect ? 'Correct' : 'Incorrect, correct answer: ' + result.problem.answer})</div>
                 `;
-
+                
                 resultsContainer.appendChild(resultItem);
-@@ -484,57 +623,71 @@ <h3>Score: ${results.score}%</h3>
+                
+                setTimeout(() => {
+                    resultItem.classList.add('rotate-in');
+                }, index * 100);
+            });
+            
+            resultProgressBar.style.width = `${results.score}%`;
+            
+            setTimeout(() => {
+                generateAssignments();
+            }, 500);
+        }
 
+        // Generate personalized assignments based on test results
+        function generateAssignments() {
+            const wrongCategories = {};
+            
             state.testResults.forEach(result => {
                 if (!result.isCorrect) {
-                    if (!wrongCategories[result.problem.operation]) {
-                        wrongCategories[result.problem.operation] = 0;
                     if (!wrongCategories[result.problem.type]) {
                         wrongCategories[result.problem.type] = 0;
                     }
-                    wrongCategories[result.problem.operation]++;
                     wrongCategories[result.problem.type]++;
                 }
             });
-
+            
             state.assignments = [];
-
-            // Add assignments for each operation with wrong answers
-            for (const [operation, count] of Object.entries(wrongCategories)) {
+            
             // Add assignments for each problem type with wrong answers
             for (const [type, count] of Object.entries(wrongCategories)) {
                 const problems = count * 2; // Double the number of practice problems
-
-                let operationName;
-                switch (operation) {
-                    case '+': operationName = 'Addition'; break;
-                    case '-': operationName = 'Subtraction'; break;
-                    case '*': operationName = 'Multiplication'; break;
-                    case '/': operationName = 'Division'; break;
+                
                 let typeName;
                 switch (type) {
                     case 'complementary': typeName = 'Complementary Angles'; break;
@@ -378,12 +649,8 @@
                     case 'right': typeName = 'Right Triangle Angles'; break;
                     case 'reflex': typeName = 'Reflex Angles'; break;
                 }
-
+                
                 state.assignments.push({
-                    id: `assignment-${operation}`,
-                    title: `${operationName} Practice`,
-                    description: `Practice ${operationName.toLowerCase()} with ${problems} problems.`,
-                    problems: generateProblemsForOperation(operation, problems),
                     id: `assignment-${type}`,
                     title: `${typeName} Practice`,
                     description: `Practice ${typeName.toLowerCase()} with ${problems} problems.`,
@@ -391,11 +658,8 @@
                     completed: false
                 });
             }
-
+            
             // If there were no wrong answers or not enough assignments
-            if (state.assignments.length < 10) {
-                const operations = ['+', '-', '*', '/'];
-                const missingCount = 10 - state.assignments.length;
             if (state.assignments.length < 3) {
                 const problemTypes = [
                     'complementary', 
@@ -406,18 +670,11 @@
                 ];
                 
                 const missingCount = 3 - state.assignments.length;
-
+                
                 for (let i = 0; i < missingCount; i++) {
-                    const op = operations[i % operations.length];
-                    let operationName;
                     const type = problemTypes[i % problemTypes.length];
                     let typeName;
-
-                    switch (op) {
-                        case '+': operationName = 'Addition'; break;
-                        case '-': operationName = 'Subtraction'; break;
-                        case '*': operationName = 'Multiplication'; break;
-                        case '/': operationName = 'Division'; break;
+                    
                     switch (type) {
                         case 'complementary': typeName = 'Complementary Angles'; break;
                         case 'supplementary': typeName = 'Supplementary Angles'; break;
@@ -425,47 +682,34 @@
                         case 'triangle': typeName = 'Triangle Angles'; break;
                         case 'conversion': typeName = 'Degree-Radian Conversion'; break;
                     }
-
+                    
                     state.assignments.push({
                         id: `assignment-extra-${i}`,
-                        title: `Extra ${operationName} Practice`,
-                        description: `Additional ${operationName.toLowerCase()} practice to improve your skills.`,
-                        problems: generateProblemsForOperation(op, 5),
                         title: `Extra ${typeName} Practice`,
                         description: `Additional ${typeName.toLowerCase()} practice to improve your skills.`,
                         problems: generateProblemsForType(type, 5),
                         completed: false
                     });
                 }
-@@ -544,40 +697,83 @@ <h3>Score: ${results.score}%</h3>
+            }
+            
+            state.completedAssignments = [];
             saveData();
         }
 
-        // Generate problems for a specific operation
-        function generateProblemsForOperation(operation, count) {
         // Generate problems for a specific type
         function generateProblemsForType(type, count) {
             const problems = [];
-
+            
             for (let i = 0; i < count; i++) {
-                let num1, num2, answer;
                 let question, answer;
-
-                switch (operation) {
-                    case '+':
-                        num1 = Math.floor(Math.random() * 50) + 1;
-                        num2 = Math.floor(Math.random() * 50) + 1;
-                        answer = num1 + num2;
+                
                 switch (type) {
                     case 'complementary':
                         const angle1 = Math.floor(Math.random() * 89) + 1;
                         answer = 90 - angle1;
                         question = `If an angle measures ${angle1}°, what is its complementary angle?`;
                         break;
-                    case '-':
-                        num1 = Math.floor(Math.random() * 50) + 25;
-                        num2 = Math.floor(Math.random() * num1) + 1;
-                        answer = num1 - num2;
                     
                     case 'supplementary':
                         const angle2 = Math.floor(Math.random() * 179) + 1;
@@ -511,10 +755,6 @@
                         answer = 180 - straightAngle1 - straightAngle2;
                         question = `In a straight line, if two angles measure ${straightAngle1}° and ${straightAngle2}°, what is the third angle?`;
                         break;
-                    case '*':
-                        num1 = Math.floor(Math.random() * 12) + 1;
-                        num2 = Math.floor(Math.random() * 12) + 1;
-                        answer = num1 * num2;
                         
                     case 'right':
                         const hypotenuse = Math.floor(Math.random() * 10) + 5;
@@ -523,10 +763,6 @@
                         answer = Math.round(Math.atan(opposite / adjacent) * 180 / Math.PI);
                         question = `In a right triangle with hypotenuse ${hypotenuse} and adjacent side ${adjacent}, what is the angle (in degrees, rounded to the nearest degree)?`;
                         break;
-                    case '/':
-                        num2 = Math.floor(Math.random() * 10) + 1;
-                        answer = Math.floor(Math.random() * 10) + 1;
-                        num1 = num2 * answer;
                         
                     case 'reflex':
                         const regularAngle = Math.floor(Math.random() * 180);
@@ -534,45 +770,47 @@
                         question = `If an angle measures ${regularAngle}°, what is its reflex angle?`;
                         break;
                 }
-
+                
                 problems.push({
-                    num1,
-                    num2,
-                    operation,
                     type,
                     question,
                     answer
                 });
             }
-@@ -602,188 +798,245 @@ <h3>Score: ${results.score}%</h3>
+            
+            return problems;
+        }
+
+        // Render assignments
+        function renderAssignments() {
+            welcomeMessage.textContent = `Hi, ${state.name}! Here are your assignments:`;
+            assignmentsContainer.innerHTML = '';
+            
+            state.assignments.forEach((assignment, index) => {
+                const assignmentElement = document.createElement('div');
+                assignmentElement.classList.add('assignment-item');
+                assignmentElement.style.animationDelay = `${index * 0.1}s`;
+                
+                if (state.completedAssignments.includes(assignment.id)) {
+                    assignmentElement.classList.add('completed');
+                }
+                
                 assignmentElement.innerHTML = `
                     <h3>${assignment.title}</h3>
                     <p>${assignment.description}</p>
-                    <button class="view-assignment" data-id="${assignment.id}">
-                        ${state.completedAssignments.includes(assignment.id) ? 'Completed ✓' : 'Start Assignment'}
                     <button class="assignment-button" data-id="${assignment.id}">
                         ${state.completedAssignments.includes(assignment.id) ? 'Review Assignment' : 'Start Assignment'}
                     </button>
                 `;
-
+                
                 assignmentsContainer.appendChild(assignmentElement);
-
-                // Add animation after adding to DOM
+                
                 setTimeout(() => {
-                    assignmentElement.classList.add('slideIn');
                     assignmentElement.classList.add('rotate-in');
                 }, index * 100);
             });
-
+            
             // Add event listeners to assignment buttons
-            document.querySelectorAll('.view-assignment').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const assignmentId = e.target.getAttribute('data-id');
-                    const assignment = state.assignments.find(a => a.id === assignmentId);
-                    
-                    if (!state.completedAssignments.includes(assignmentId)) {
-                        completeAssignment(assignment);
-                    }
             const assignmentButtons = document.querySelectorAll('.assignment-button');
             assignmentButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -580,30 +818,15 @@
                     startAssignment(assignmentId);
                 });
             });
-
+            
             // Show retake test button if all assignments are completed
-            if (state.completedAssignments.length === state.assignments.length) {
             if (state.completedAssignments.length === state.assignments.length && state.assignments.length > 0) {
                 retakeTestButton.classList.remove('hidden');
-                retakeTestButton.classList.add('pulse');
             } else {
                 retakeTestButton.classList.add('hidden');
             }
         }
 
-        // Complete an assignment
-        function completeAssignment(assignment) {
-            const modalElement = document.createElement('div');
-            modalElement.style.position = 'fixed';
-            modalElement.style.top = '0';
-            modalElement.style.left = '0';
-            modalElement.style.width = '100%';
-            modalElement.style.height = '100%';
-            modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            modalElement.style.display = 'flex';
-            modalElement.style.justifyContent = 'center';
-            modalElement.style.alignItems = 'center';
-            modalElement.style.zIndex = '1000';
         // Update assignment progress
         function updateAssignmentProgress() {
             const progress = state.completedAssignments.length / state.assignments.length * 100;
@@ -626,20 +849,15 @@
             modal.style.justifyContent = 'center';
             modal.style.alignItems = 'center';
             modal.style.zIndex = '1000';
-
+            
             const modalContent = document.createElement('div');
             modalContent.style.backgroundColor = 'white';
             modalContent.style.padding = '30px';
             modalContent.style.borderRadius = '8px';
-            modalContent.style.maxWidth = '600px';
-            modalContent.style.width = '90%';
-            modalContent.style.maxHeight = '80vh';
             modalContent.style.maxWidth = '80%';
             modalContent.style.maxHeight = '80%';
             modalContent.style.overflow = 'auto';
-            modalContent.style.animation = 'fadeIn 0.3s forwards';
-
-            let problemsHTML = `<h2>${assignment.title}</h2><p>Complete the following problems:</p>`;
+            
             modalContent.innerHTML = `
                 <h2>${assignment.title}</h2>
                 <p>${assignment.description}</p>
@@ -653,14 +871,8 @@
             
             // Render assignment problems
             const problemsContainer = document.getElementById('assignmentProblems');
-
+            
             assignment.problems.forEach((problem, index) => {
-                let operationSymbol;
-                switch (problem.operation) {
-                    case '+': operationSymbol = '+'; break;
-                    case '-': operationSymbol = '-'; break;
-                    case '*': operationSymbol = '×'; break;
-                    case '/': operationSymbol = '÷'; break;
                 const problemElement = document.createElement('div');
                 problemElement.classList.add('question');
                 
@@ -679,13 +891,7 @@
                         </div>
                     `;
                 }
-
-                problemsHTML += `
-                    <div class="question" style="animation-delay: ${index * 0.1}s">
-                        <p>${problem.num1} ${operationSymbol} ${problem.num2} = ?</p>
-                        <input type="number" id="problem-${index}" data-answer="${problem.answer}" placeholder="Your answer">
-                        <div class="feedback-icon" id="feedback-${index}"></div>
-                    </div>
+                
                 problemElement.innerHTML = `
                     <h3>Problem ${index + 1}</h3>
                     <p>${problem.question}</p>
@@ -693,23 +899,7 @@
                     <input type="number" id="answer-${assignmentId}-${index}" placeholder="Your answer" step="any">
                     <div id="feedback-${assignmentId}-${index}" class="feedback hidden"></div>
                 `;
-            });
-            
-            problemsHTML += `<button id="submit-assignment">Submit Assignment</button>`;
-            
-            modalContent.innerHTML = problemsHTML;
-            modalElement.appendChild(modalContent);
-            document.body.appendChild(modalElement);
-            
-            // Add event listener to submit button
-            document.getElementById('submit-assignment').addEventListener('click', () => {
-                let allCorrect = true;
-                const inputs = modalContent.querySelectorAll('input');
-
-                inputs.forEach((input, index) => {
-                    const userAnswer = parseInt(input.value);
-                    const correctAnswer = parseInt(input.getAttribute('data-answer'));
-                    const feedbackElement = document.getElementById(`feedback-${index}`);
+                
                 problemsContainer.appendChild(problemElement);
                 
                 // Setup angle visualization if applicable
@@ -722,18 +912,10 @@
                     // Extract angle information from the problem
                     let displayAngle;
                     const angleMatch = problem.question.match(/(\d+)°/);
-
-                    if (userAnswer === correctAnswer) {
-                        input.style.borderColor = 'green';
-                        feedbackElement.innerHTML = '✓';
-                        feedbackElement.style.color = 'green';
+                    
                     if (angleMatch) {
                         displayAngle = parseInt(angleMatch[1]);
                     } else {
-                        input.style.borderColor = 'red';
-                        feedbackElement.innerHTML = `✗ (Correct: ${correctAnswer})`;
-                        feedbackElement.style.color = 'red';
-                        allCorrect = false;
                         // Default angle display
                         switch (problem.type) {
                             case 'complementary': displayAngle = 30; break;
@@ -745,7 +927,6 @@
                             default: displayAngle = 45;
                         }
                     }
-                });
                     
                     // Update the visualization
                     movingLine.style.transform = `rotate(${displayAngle}deg)`;
@@ -780,22 +961,12 @@
             // Add event listeners to assignment buttons
             document.getElementById('completeAssignment').addEventListener('click', () => {
                 let allCorrect = true;
-
-                if (allCorrect) {
-                    modalContent.innerHTML = `
-                        <h2>Great job!</h2>
-                        <p>You've completed this assignment perfectly!</p>
-                        <button id="close-modal">Continue</button>
-                    `;
+                
                 assignment.problems.forEach((problem, index) => {
                     const answerInput = document.getElementById(`answer-${assignmentId}-${index}`);
                     const userAnswer = parseFloat(answerInput.value);
                     const feedbackElement = document.getElementById(`feedback-${assignmentId}-${index}`);
-
-                    // Mark assignment as completed
-                    if (!state.completedAssignments.includes(assignment.id)) {
-                        state.completedAssignments.push(assignment.id);
-                        saveData();
+                    
                     // Check answer with tolerance for radian answers
                     let isCorrect;
                     if (problem.type === 'conversion') {
@@ -803,25 +974,11 @@
                     } else {
                         isCorrect = userAnswer === problem.answer;
                     }
-
-                    document.getElementById('close-modal').addEventListener('click', () => {
-                        document.body.removeChild(modalElement);
-                        renderAssignments();
-                        updateAssignmentProgress();
-                    });
-                } else {
-                    const retryButton = document.createElement('button');
-                    retryButton.textContent = 'Try Again';
-                    retryButton.style.marginTop = '20px';
-                    modalContent.appendChild(retryButton);
+                    
                     feedbackElement.classList.remove('hidden', 'positive', 'negative');
                     feedbackElement.classList.add(isCorrect ? 'positive' : 'negative');
                     feedbackElement.textContent = isCorrect ? 'Correct!' : `Incorrect. The answer is ${problem.answer}.`;
-
-                    retryButton.addEventListener('click', () => {
-                        document.body.removeChild(modalElement);
-                        completeAssignment(assignment);
-                    });
+                    
                     if (!isCorrect) allCorrect = false;
                 });
                 
@@ -838,24 +995,9 @@
             });
         }
 
-        // Update assignment progress bar
-        function updateAssignmentProgress() {
-            const progress = (state.completedAssignments.length / state.assignments.length) * 100;
-            assignmentProgressBar.style.width = `${progress}%`;
-        }
-
-        // Compare test scores and show improvement feedback
         // Show improvement screen
         function showImprovement() {
-            const initialScore = state.initialScore;
-            const finalScore = state.finalScore;
-            const improvement = finalScore - initialScore;
-            
             improvementContainer.innerHTML = `
-                <h3>Test Scores</h3>
-                <p>Initial Test: ${initialScore}%</p>
-                <p>Final Test: ${finalScore}%</p>
-                <p>Improvement: ${improvement > 0 ? '+' + improvement : improvement}%</p>
                 <h3>Initial Test Score: ${state.initialScore}%</h3>
                 <h3>Final Test Score: ${state.finalScore}%</h3>
                 <div class="progress-bar">
@@ -865,36 +1007,25 @@
                     <div class="progress-bar-fill" style="width: ${state.finalScore}%; background-color: var(--success);"></div>
                 </div>
             `;
-
+            
             const improvement = state.finalScore - state.initialScore;
             
             if (improvement > 0) {
-                feedbackMessage.textContent = "Great improvement! Keep up the good work!";
                 feedbackMessage.textContent = `Great job! You improved by ${improvement}%!`;
                 feedbackMessage.classList.add('positive');
-                feedbackMessage.classList.add('bounce');
                 feedbackMessage.classList.remove('negative');
             } else if (improvement === 0) {
                 feedbackMessage.textContent = `You maintained your score of ${state.finalScore}%. Keep practicing to improve!`;
                 feedbackMessage.classList.remove('positive', 'negative');
             } else {
-                feedbackMessage.textContent = "BETTER DO BETTER OR I WILL SPANK U!!!";
                 feedbackMessage.textContent = `You scored ${Math.abs(improvement)}% lower. Let's keep practicing!`;
                 feedbackMessage.classList.add('negative');
-                feedbackMessage.classList.add('shake');
                 feedbackMessage.classList.remove('positive');
             }
         }
 
         // Event Listeners
         startButton.addEventListener('click', () => {
-            const name = userName.value.trim();
-            if (name) {
-                state.name = name;
-                saveData();
-                showScreen(testScreen);
-                renderTest();
-            } else {
             if (userName.value.trim() === '') {
                 userName.classList.add('shake');
                 setTimeout(() => {
@@ -909,30 +1040,40 @@
         });
 
         submitTestButton.addEventListener('click', () => {
-@@ -804,9 +1057,9 @@ <h3>Test Scores</h3>
+            const results = gradeTest();
+            showScreen(resultsScreen);
+            renderResults(results);
+        });
+
+        viewAssignmentsButton.addEventListener('click', () => {
+            showScreen(assignmentsScreen);
+            renderAssignments();
+            updateAssignmentProgress();
+        });
+
+        retakeTestButton.addEventListener('click', () => {
+            showScreen(testScreen);
+            renderTest();
         });
 
         startOverButton.addEventListener('click', () => {
-            localStorage.removeItem('mathAppData');
             // Reset state
             state = {
-                name: '',
                 name: state.name,
                 currentTest: [],
                 testResults: [],
                 assignments: [],
-@@ -815,11 +1068,153 @@ <h3>Test Scores</h3>
+                completedAssignments: [],
+                initialScore: 0,
                 finalScore: 0,
                 testAttempts: 0
             };
-            showScreen(welcomeScreen);
             
             saveData();
             showScreen(testScreen);
             renderTest();
         });
 
-        // Load saved data or initialize app
         // Additional Angle Math Functions
 
         // Convert degrees to radians
