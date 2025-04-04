@@ -1216,5 +1216,40 @@
         loadSavedData();
         addVisualizerButton();
     </script>
+    <div class="sidebar">
+        <h2>Personalization</h2>
+        <label for="theme">Theme:</label>
+        <select id="theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+        
+        <label for="font-size">Font Size:</label>
+        <select id="font-size">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+        </select>
+    </div>
+    <div class="content">
+        <h1>Welcome to Our Website</h1>
+        <p>Use the panel on the left to customize your experience.</p>
+    </div>
+    <script>
+        document.getElementById('theme').addEventListener('change', function() {
+            document.body.classList.toggle('dark-theme', this.value === 'dark');
+        });
+
+        document.getElementById('font-size').addEventListener('change', function() {
+            let size = this.value;
+            if (size === 'small') {
+                document.body.style.fontSize = '12px';
+            } else if (size === 'medium') {
+                document.body.style.fontSize = '16px';
+            } else {
+                document.body.style.fontSize = '20px';
+            }
+        });
+    </script>
 </body>
 </html>
